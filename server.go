@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -24,6 +25,11 @@ type User struct {
 	Telefono  string `json:"telefono"`
 	Username  string `json:"username"`
 	Password  string `json:"password"`
+}
+
+type POSTGotUser struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
 type City struct {
@@ -102,22 +108,71 @@ func userHandler(w http.ResponseWriter, r *http.Request) {
 
 		userToRet.Username = usrName
 
-		//Create json
-		j, jsonErr := json.Marshal(userToRet)
-		if jsonErr != nil {
-			fmt.Println(jsonErr)
+		if userToRet.Nome != "" {
+			//Create json
+			j, jsonErr := json.Marshal(userToRet)
+			if jsonErr != nil {
+				fmt.Println(jsonErr)
+				w.Write([]byte(`{"message": "error"}`))
+				return
+			}
+
+			w.Write([]byte(j))
+		} else {
+			w.Write([]byte(`{"message": "error"}`))
+		}
+	case "POST":
+		//Passo l'username e la password per avere tutte le informazioni di cui dispongo nel database
+		reqBody, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			fmt.Println(err)
 			w.Write([]byte(`{"message": "error"}`))
 			return
 		}
 
-		w.Write([]byte(j))
-	case "POST":
-		//Passo l'username e la password per avere tutte le informazioni di cui dispongo nel database
+		var pgu POSTGotUser
+		json.Unmarshal([]byte(reqBody), &pgu)
+
+		username := pgu.Username
+		password := pgu.Password
+
 		w.WriteHeader(http.StatusCreated)
-		w.Write([]byte(`POST`))
+
+		//Execute quey
+		queyRes, queyErr := db.Query("SELECT * FROM utente WHERE Account='" + username + "' AND Password='" + password + "'")
+		if queyErr != nil {
+			fmt.Println(queyErr)
+			w.Write([]byte(`{"message": "error"}`))
+			return
+		}
+
+		//Create the object
+		var userToRet User
+		for queyRes.Next() {
+			scanErr := queyRes.Scan(&userToRet.ID, &userToRet.Nome, &userToRet.Cognome, &userToRet.CF, &userToRet.Indirizzo, &userToRet.IDCitta, &userToRet.Telefono, &userToRet.Username, &userToRet.Password)
+			if scanErr != nil {
+				fmt.Println(scanErr)
+				w.Write([]byte(`{"message": "error"}`))
+				return
+			}
+		}
+
+		if userToRet.Nome != "" {
+			//Create json
+			j, jsonErr := json.Marshal(userToRet)
+			if jsonErr != nil {
+				fmt.Println(jsonErr)
+				w.Write([]byte(`{"message": "error"}`))
+				return
+			}
+
+			w.Write([]byte(j))
+		} else {
+			w.Write([]byte(`{"message": "userNotFound"}`))
+		}
 	default:
 		w.WriteHeader(http.StatusNotFound)
-		w.Write([]byte(`{"message": "not found"}`))
+		w.Write([]byte(`NOT SUPPORTED`))
 	}
 
 	db.Close()
