@@ -7,6 +7,8 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	types "github.com/Compelo/compleo-api/types"
+
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -14,34 +16,6 @@ import (
 //		work on 5051 port
 
 var sqlVal = "root:@tcp(127.0.0.1:3306)/compleo"
-
-type User struct {
-	ID        int    `json:"id"`
-	Nome      string `json:"nome"`
-	Cognome   string `json:"cognome"`
-	CF        string `json:"cf"`
-	Indirizzo string `json:"indirizzo"`
-	IDCitta   string `json:"idCitta"`
-	Telefono  string `json:"telefono"`
-	Username  string `json:"username"`
-	Password  string `json:"password"`
-}
-
-type POSTGotUser struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-}
-
-type City struct {
-	ID        int    `json:"id"`
-	Nome      string `json:"nome"`
-	Provincia string `json:"provincia"`
-}
-
-type Province struct {
-	ID   int    `json:"id"`
-	Nome string `json:"nome"`
-}
 
 func main() {
 	fmt.Println(" -> Starting compleo-api version 0.1 server")
@@ -151,7 +125,7 @@ func userHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		//Create the object
-		var userToRet User
+		var userToRet types.User
 		for queyRes.Next() {
 			scanErr := queyRes.Scan(&userToRet.Nome, &userToRet.Cognome, &userToRet.Indirizzo, &userToRet.IDCitta, &userToRet.Telefono)
 			if scanErr != nil {
@@ -185,7 +159,7 @@ func userHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		var pgu POSTGotUser
+		var pgu types.POSTGotUser
 		json.Unmarshal([]byte(reqBody), &pgu)
 
 		username := pgu.Username
@@ -202,7 +176,7 @@ func userHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		//Create the object
-		var userToRet User
+		var userToRet types.User
 		for queyRes.Next() {
 			scanErr := queyRes.Scan(&userToRet.ID, &userToRet.Nome, &userToRet.Cognome, &userToRet.CF, &userToRet.Indirizzo, &userToRet.IDCitta, &userToRet.Telefono, &userToRet.Username, &userToRet.Password)
 			if scanErr != nil {
