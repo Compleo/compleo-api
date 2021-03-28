@@ -6,7 +6,9 @@ type User struct {
 	Cognome   string `json:"cognome"`
 	CF        string `json:"cf"`
 	Indirizzo string `json:"indirizzo"`
-	IDCitta   string `json:"idCitta"` //Necessita di essere cambiato in "Citta"
+	Regione   string `json:"regione"`
+	Citta     string `json:"citta"`
+	Provincia string `json:"provincia"`
 	Telefono  string `json:"telefono"`
 	Username  string `json:"username"`
 	Password  string `json:"password"`
