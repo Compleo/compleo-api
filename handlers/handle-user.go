@@ -114,6 +114,43 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 		} else {
 			w.Write([]byte(`{"message": "userNotFound"}`))
 		}
+	case "PUT":
+		err := r.ParseForm()
+		if err != nil {
+			fmt.Println(err)
+			w.Write([]byte(`{"message": "error"}`))
+			return
+		}
+
+		var toRegisterUser types.User
+		//Popola l'oggetto
+		toRegisterUser.Nome = r.FormValue("nome")
+		toRegisterUser.Cognome = r.FormValue("cognome")
+		toRegisterUser.CF = r.FormValue("cf")
+
+		toRegisterUser.Indirizzo = r.FormValue("indirizzo")
+
+		//NECESSITA DI RISTRUTTURARE IL DATABASE
+		/*
+			toRegisterUser.Citta = r.FormValue("citta")
+		*/
+
+		//Solo per test
+		toRegisterUser.IDCitta = r.FormValue("citta")
+
+		toRegisterUser.Telefono = r.FormValue("telefono")
+		toRegisterUser.Username = r.FormValue("username") //Nel database si chiama Account, da cambiare necessariamente il nome di questa colonna
+		toRegisterUser.Password = r.FormValue("password")
+
+		//Esegui la query
+		_, queyErr := db.Query("INSERT INTO `utente`(`Nome`, `Cognome`, `CF`, `Indirizzo`, `IDCitta`, `Telefono`, `Account`, `Password`) VALUES ('" + toRegisterUser.Nome + "', '" + toRegisterUser.Cognome + "', '" + toRegisterUser.CF + "', '" + toRegisterUser.Indirizzo + "', '" + toRegisterUser.IDCitta + "', '" + toRegisterUser.Telefono + "', '" + toRegisterUser.Username + "', '" + toRegisterUser.Password + "')")
+		if queyErr != nil {
+			fmt.Println(queyErr)
+			w.Write([]byte(`{"message": "error"}`))
+			fmt.Println("INSERT INTO `utente`(`Nome`, `Cognome`, `CF`, `Indirizzo`, `IDCitta`, `Telefono`, `Account`, `Password`) VALUES ('" + toRegisterUser.Nome + "', '" + toRegisterUser.Cognome + "', '" + toRegisterUser.CF + "', '" + toRegisterUser.Indirizzo + "', '" + toRegisterUser.IDCitta + "', '" + toRegisterUser.Telefono + "', '" + toRegisterUser.Username + "', '" + toRegisterUser.Password + "')")
+			return
+		}
+
 	default:
 		w.WriteHeader(http.StatusNotFound)
 		w.Write([]byte(`NOT SUPPORTED`))
