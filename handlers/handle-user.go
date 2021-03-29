@@ -11,6 +11,40 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+func AddUserHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Got a /addUser handle from ", r.RemoteAddr)
+	w.Header().Set("Content-Type", "application/json")
+
+	db, sqlError := sql.Open("mysql", sqlVal)
+	if sqlError != nil {
+		panic(sqlError.Error())
+	}
+
+	switch r.Method {
+	case "POST":
+		reqBody, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			fmt.Println(err)
+			w.Write([]byte(`{"message": "error"}`))
+			return
+		}
+
+		var toRegisterUser types.User
+		//Popola l'oggetto
+		json.Unmarshal([]byte(reqBody), &toRegisterUser)
+
+		//Esegui la query
+		_, queyErr := db.Query("INSERT INTO `utente`(`Nome`, `Cognome`, `CF`, `Indirizzo`, `Citta`, `Regione`, `Provincia`, `Telefono`, `Username`, `Password`) VALUES ('" + toRegisterUser.Nome + "', '" + toRegisterUser.Cognome + "', '" + toRegisterUser.CF + "', '" + toRegisterUser.Indirizzo + "', '" + toRegisterUser.Citta + "', '" + toRegisterUser.Regione + "', '" + toRegisterUser.Provincia + "', '" + toRegisterUser.Telefono + "', '" + toRegisterUser.Username + "', '" + toRegisterUser.Password + "')")
+		if queyErr != nil {
+			fmt.Println(queyErr)
+			w.Write([]byte(`{"message": "error"}`))
+			fmt.Println("INSERT INTO `utente`(`Nome`, `Cognome`, `CF`, `Indirizzo`, `Citta`, `Regione`, `Provincia`, `Telefono`, `Username`, `Password`) VALUES ('" + toRegisterUser.Nome + "', '" + toRegisterUser.Cognome + "', '" + toRegisterUser.CF + "', '" + toRegisterUser.Indirizzo + "', '" + toRegisterUser.Citta + "', '" + toRegisterUser.Regione + "', '" + toRegisterUser.Provincia + "', '" + toRegisterUser.Telefono + "', '" + toRegisterUser.Username + "', '" + toRegisterUser.Password + "')")
+			return
+		}
+
+	}
+}
+
 func UserHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Got a /user handle from ", r.RemoteAddr)
 	w.Header().Set("Content-Type", "application/json")
@@ -115,38 +149,6 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte(`{"message": "userNotFound"}`))
 		}
 	case "PUT":
-		err := r.ParseForm()
-		if err != nil {
-			fmt.Println(err)
-			w.Write([]byte(`{"message": "error"}`))
-			return
-		}
-
-		var toRegisterUser types.User
-		//Popola l'oggetto
-		toRegisterUser.Nome = r.FormValue("nome")
-		toRegisterUser.Cognome = r.FormValue("cognome")
-		toRegisterUser.CF = r.FormValue("cf")
-
-		//Provenienza utente
-		toRegisterUser.Indirizzo = r.FormValue("indirizzo")
-		toRegisterUser.Citta = r.FormValue("citta")
-		toRegisterUser.Provincia = r.FormValue("provincia")
-		toRegisterUser.Regione = r.FormValue("regione")
-
-		toRegisterUser.Telefono = r.FormValue("telefono")
-		toRegisterUser.Username = r.FormValue("username")
-		toRegisterUser.Password = r.FormValue("password")
-
-		//Esegui la query
-		_, queyErr := db.Query("INSERT INTO `utente`(`Nome`, `Cognome`, `CF`, `Indirizzo`, `Citta`, `Regione`, `Provincia`, `Telefono`, `Username`, `Password`) VALUES ('" + toRegisterUser.Nome + "', '" + toRegisterUser.Cognome + "', '" + toRegisterUser.CF + "', '" + toRegisterUser.Indirizzo + "', '" + toRegisterUser.Citta + "', '" + toRegisterUser.Regione + "', '" + toRegisterUser.Provincia + "', '" + toRegisterUser.Telefono + "', '" + toRegisterUser.Username + "', '" + toRegisterUser.Password + "')")
-		if queyErr != nil {
-			fmt.Println(queyErr)
-			w.Write([]byte(`{"message": "error"}`))
-			fmt.Println("INSERT INTO `utente`(`Nome`, `Cognome`, `CF`, `Indirizzo`, `Citta`, `Regione`, `Provincia`, `Telefono`, `Username`, `Password`) VALUES ('" + toRegisterUser.Nome + "', '" + toRegisterUser.Cognome + "', '" + toRegisterUser.CF + "', '" + toRegisterUser.Indirizzo + "', '" + toRegisterUser.Citta + "', '" + toRegisterUser.Regione + "', '" + toRegisterUser.Provincia + "', '" + toRegisterUser.Telefono + "', '" + toRegisterUser.Username + "', '" + toRegisterUser.Password + "')")
-			return
-		}
-
 	default:
 		w.WriteHeader(http.StatusNotFound)
 		w.Write([]byte(`NOT SUPPORTED`))
