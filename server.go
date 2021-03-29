@@ -19,7 +19,7 @@ func checkError(e error) {
 }
 
 func main() {
-	fmt.Println(" -> Starting compleo-api version 0.1 server")
+	fmt.Println(" -> Starting compleo-api version 0.3 server")
 	fmt.Println(" -> Developed by Leonardo Baldazzi; Copyright (c) 2021 Compleo")
 	fmt.Println(" -> Starting server on port 5051 and listening... ")
 
