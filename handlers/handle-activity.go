@@ -20,6 +20,8 @@ func ActivityHanle(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "GET":
+		//TODO: IL CODICE SEGUENTE E' INGUARDABILE
+
 		//Controllo le variabili che mi sono state passate
 		keys, err := r.URL.Query()["lst"] //Key lst sta per 'lista', se settata vuol dire che non devo listare
 		if !err || len(keys[0]) < 1 {
