@@ -34,11 +34,11 @@ func AddUserHandler(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal([]byte(reqBody), &toRegisterUser)
 
 		//Esegui la query
-		_, queyErr := db.Query("INSERT INTO `utente`(`Nome`, `Cognome`, `CF`, `Indirizzo`, `Citta`, `Regione`, `Provincia`, `Telefono`, `Username`, `Password`) VALUES ('" + toRegisterUser.Nome + "', '" + toRegisterUser.Cognome + "', '" + toRegisterUser.CF + "', '" + toRegisterUser.Indirizzo + "', '" + toRegisterUser.Citta + "', '" + toRegisterUser.Regione + "', '" + toRegisterUser.Provincia + "', '" + toRegisterUser.Telefono + "', '" + toRegisterUser.Username + "', '" + toRegisterUser.Password + "')")
+		_, queyErr := db.Query("INSERT INTO `utente`(`Nome`, `Cognome`, `CF`, `Indirizzo`, `Citta`, `Regione`, `Provincia`, `Telefono`, `Email`, `Username`, `Password`) VALUES ('" + toRegisterUser.Nome + "', '" + toRegisterUser.Cognome + "', '" + toRegisterUser.CF + "', '" + toRegisterUser.Indirizzo + "', '" + toRegisterUser.Citta + "', '" + toRegisterUser.Regione + "', '" + toRegisterUser.Provincia + "', '" + toRegisterUser.Telefono + "', '" + toRegisterUser.EMail + "', '" + toRegisterUser.Username + "', '" + toRegisterUser.Password + "')")
 		if queyErr != nil {
 			fmt.Println(queyErr)
 			w.Write([]byte(`{"message": "error"}`))
-			fmt.Println("INSERT INTO `utente`(`Nome`, `Cognome`, `CF`, `Indirizzo`, `Citta`, `Regione`, `Provincia`, `Telefono`, `Username`, `Password`) VALUES ('" + toRegisterUser.Nome + "', '" + toRegisterUser.Cognome + "', '" + toRegisterUser.CF + "', '" + toRegisterUser.Indirizzo + "', '" + toRegisterUser.Citta + "', '" + toRegisterUser.Regione + "', '" + toRegisterUser.Provincia + "', '" + toRegisterUser.Telefono + "', '" + toRegisterUser.Username + "', '" + toRegisterUser.Password + "')")
+			fmt.Println("INSERT INTO `utente`(`Nome`, `Cognome`, `CF`, `Indirizzo`, `Citta`, `Regione`, `Provincia`, `Telefono`, `Email`, `Username`, `Password`) VALUES ('" + toRegisterUser.Nome + "', '" + toRegisterUser.Cognome + "', '" + toRegisterUser.CF + "', '" + toRegisterUser.Indirizzo + "', '" + toRegisterUser.Citta + "', '" + toRegisterUser.Regione + "', '" + toRegisterUser.Provincia + "', '" + toRegisterUser.Telefono + "', '" + toRegisterUser.EMail + "', '" + toRegisterUser.Username + "', '" + toRegisterUser.Password + "')")
 			return
 		}
 
@@ -149,6 +149,7 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte(`{"message": "userNotFound"}`))
 		}
 	case "PUT":
+
 	default:
 		w.WriteHeader(http.StatusNotFound)
 		w.Write([]byte(`NOT SUPPORTED`))

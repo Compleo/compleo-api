@@ -10,6 +10,7 @@ type User struct {
 	Citta     string `json:"citta"`
 	Provincia string `json:"provincia"`
 	Telefono  string `json:"telefono"`
+	EMail     string `json:"email"`
 	Username  string `json:"username"`
 	Password  string `json:"password"`
 }
