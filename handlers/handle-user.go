@@ -83,6 +83,11 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 		username := pgu.Username
 		password := pgu.Password
 
+		if pgu.CheckUser() {
+			w.Write([]byte(`{"message": "error"}`))
+			return
+		}
+
 		w.WriteHeader(http.StatusCreated)
 
 		//Execute quey
@@ -142,10 +147,8 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 		citta.Nome = r.FormValue("citta")
 		citta.Regione = r.FormValue("regione")
 		citta.Provincia = r.FormValue("provincia")
-		/*
-			toRegisterUser.Citta = r.FormValue("citta")
-			toRegisterUser.Regione = r.FormValue("regione")
-			toRegisterUser.Provincia = r.FormValue("provincia")*/
+
+		toRegisterUser.Citta = citta
 
 		//Utente
 		toRegisterUser.EMail = r.FormValue("email")
