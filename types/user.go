@@ -23,5 +23,5 @@ type POSTGotUser struct {
 }
 
 func (u User) CheckUser() bool {
-	return u.Nome == "" || u.Cognome == "" || u.CF == "" || u.Indirizzo == "" || u.Regione == "" || u.Citta == "" || u.Provincia == "" || u.Telefono == "" || u.EMail == "" || u.Password == ""
+	return u.Nome == "" || u.Cognome == "" || u.CF == "" || u.Indirizzo == "" || u.Regione == "" || u.Citta == "" || u.Provincia == "" || u.Telefono == "" || u.EMail == "" || u.Username == "" || u.Password == ""
 }

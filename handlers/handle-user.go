@@ -150,8 +150,10 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 		//TODO: CONTROLLA SE L'UTENTE E' GIA' REGISTRATO
 
 		//Controlla che i dati siano corretti
-		if toRegisterUser.CheckUser() {
+		if !toRegisterUser.CheckUser() {
 			w.Write([]byte(`{"message": "error"}`))
+			fmt.Println("ERRORE")
+			fmt.Println(toRegisterUser.Username)
 			return
 		}
 
