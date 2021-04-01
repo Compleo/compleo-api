@@ -21,3 +21,7 @@ type POSTGotUser struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
+
+func (u User) CheckUser() bool {
+	return u.Nome == "" || u.Cognome == "" || u.CF == "" || u.Indirizzo == "" || u.Regione == "" || u.Citta == "" || u.Provincia == "" || u.Telefono == "" || u.EMail == "" || u.Password == ""
+}

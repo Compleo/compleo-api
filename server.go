@@ -33,7 +33,6 @@ func initHandlers() {
 	http.HandleFunc("/", rootHanle)
 	http.HandleFunc("/activity", handlers.ActivityHanle)
 	http.HandleFunc("/user", handlers.UserHandler)
-	http.HandleFunc("/addUser", handlers.AddUserHandler)
 }
 
 func rootHanle(w http.ResponseWriter, r *http.Request) {
