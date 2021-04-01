@@ -33,7 +33,7 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 
 		//Execute query
-		queyRes, queyErr := db.Query("SELECT Nome, Cognome, Indirizzo, Citta, Provincia, Regione, Telefono FROM utente WHERE Account='" + usrName + "'")
+		queyRes, queyErr := db.Query("SELECT Nome, Cognome, Indirizzo, Citta, Provincia, Regione, Telefono FROM utente WHERE Username='" + usrName + "'")
 		if queyErr != nil {
 			fmt.Println(queyErr)
 			w.Write([]byte(`{"message": "error"}`))
@@ -42,8 +42,10 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 
 		//Create the object
 		var userToRet types.User
+		var cittaToRet types.City
+		userToRet.Citta = cittaToRet
 		for queyRes.Next() {
-			scanErr := queyRes.Scan(&userToRet.Nome, &userToRet.Cognome, &userToRet.Indirizzo, &userToRet.Citta, &userToRet.Regione, &userToRet.Provincia, &userToRet.Telefono)
+			scanErr := queyRes.Scan(&userToRet.Nome, &userToRet.Cognome, &userToRet.Indirizzo, &userToRet.Citta.Nome, &userToRet.Citta.Regione, &userToRet.Citta.Provincia, &userToRet.Telefono)
 			if scanErr != nil {
 				fmt.Println(scanErr)
 				w.Write([]byte(`{"message": "error"}`))
@@ -93,8 +95,10 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 
 		//Create the object
 		var userToRet types.User
+		var cittaToRet types.City
+		userToRet.Citta = cittaToRet
 		for queyRes.Next() {
-			scanErr := queyRes.Scan(&userToRet.ID, &userToRet.Nome, &userToRet.Cognome, &userToRet.CF, &userToRet.Indirizzo, &userToRet.Citta, &userToRet.Regione, &userToRet.Provincia, &userToRet.Telefono, &userToRet.EMail, &userToRet.Username, &userToRet.Password)
+			scanErr := queyRes.Scan(&userToRet.ID, &userToRet.Nome, &userToRet.Cognome, &userToRet.CF, &userToRet.Indirizzo, &userToRet.Citta.Nome, &userToRet.Citta.Regione, &userToRet.Citta.Provincia, &userToRet.Telefono, &userToRet.EMail, &userToRet.Username, &userToRet.Password)
 			if scanErr != nil {
 				fmt.Println(scanErr)
 				w.Write([]byte(`{"message": "error"}`))
@@ -133,9 +137,15 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 
 		//Posizione geografica
 		toRegisterUser.Indirizzo = r.FormValue("indirizzo")
-		toRegisterUser.Citta = r.FormValue("citta")
-		toRegisterUser.Regione = r.FormValue("regione")
-		toRegisterUser.Provincia = r.FormValue("provincia")
+
+		var citta types.City
+		citta.Nome = r.FormValue("citta")
+		citta.Regione = r.FormValue("regione")
+		citta.Provincia = r.FormValue("provincia")
+		/*
+			toRegisterUser.Citta = r.FormValue("citta")
+			toRegisterUser.Regione = r.FormValue("regione")
+			toRegisterUser.Provincia = r.FormValue("provincia")*/
 
 		//Utente
 		toRegisterUser.EMail = r.FormValue("email")
@@ -158,11 +168,11 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		//Esegui la query
-		_, queyErr := db.Query("INSERT INTO `utente`(`Nome`, `Cognome`, `CF`, `Indirizzo`, `Citta`, `Regione`, `Provincia`, `Telefono`, `Email`, `Username`, `Password`) VALUES ('" + toRegisterUser.Nome + "', '" + toRegisterUser.Cognome + "', '" + toRegisterUser.CF + "', '" + toRegisterUser.Indirizzo + "', '" + toRegisterUser.Citta + "', '" + toRegisterUser.Regione + "', '" + toRegisterUser.Provincia + "', '" + toRegisterUser.Telefono + "', '" + toRegisterUser.EMail + "', '" + toRegisterUser.Username + "', '" + toRegisterUser.Password + "')")
+		_, queyErr := db.Query("INSERT INTO `utente`(`Nome`, `Cognome`, `CF`, `Indirizzo`, `Citta`, `Regione`, `Provincia`, `Telefono`, `Email`, `Username`, `Password`) VALUES ('" + toRegisterUser.Nome + "', '" + toRegisterUser.Cognome + "', '" + toRegisterUser.CF + "', '" + toRegisterUser.Indirizzo + "', '" + toRegisterUser.Citta.Nome + "', '" + toRegisterUser.Citta.Regione + "', '" + toRegisterUser.Citta.Provincia + "', '" + toRegisterUser.Telefono + "', '" + toRegisterUser.EMail + "', '" + toRegisterUser.Username + "', '" + toRegisterUser.Password + "')")
 		if queyErr != nil {
 			fmt.Println(queyErr)
 			w.Write([]byte(`{"message": "error"}`))
-			fmt.Println("INSERT INTO `utente`(`Nome`, `Cognome`, `CF`, `Indirizzo`, `Citta`, `Regione`, `Provincia`, `Telefono`, `Email`, `Username`, `Password`) VALUES ('" + toRegisterUser.Nome + "', '" + toRegisterUser.Cognome + "', '" + toRegisterUser.CF + "', '" + toRegisterUser.Indirizzo + "', '" + toRegisterUser.Citta + "', '" + toRegisterUser.Regione + "', '" + toRegisterUser.Provincia + "', '" + toRegisterUser.Telefono + "', '" + toRegisterUser.EMail + "', '" + toRegisterUser.Username + "', '" + toRegisterUser.Password + "')")
+			fmt.Println("INSERT INTO `utente`(`Nome`, `Cognome`, `CF`, `Indirizzo`, `Citta`, `Regione`, `Provincia`, `Telefono`, `Email`, `Username`, `Password`) VALUES ('" + toRegisterUser.Nome + "', '" + toRegisterUser.Cognome + "', '" + toRegisterUser.CF + "', '" + toRegisterUser.Indirizzo + "', '" + toRegisterUser.Citta.Nome + "', '" + toRegisterUser.Citta.Regione + "', '" + toRegisterUser.Citta.Provincia + "', '" + toRegisterUser.Telefono + "', '" + toRegisterUser.EMail + "', '" + toRegisterUser.Username + "', '" + toRegisterUser.Password + "')")
 			return
 		}
 	default:

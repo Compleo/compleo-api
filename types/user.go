@@ -6,10 +6,8 @@ type User struct {
 	Cognome   string `json:"cognome"`
 	CF        string `json:"cf"`
 	Indirizzo string `json:"indirizzo"`
-	//TODO: ELIMINARE I 3 CAMPI SEGUENTI E SOSTITUIRE CON UN SOLO CMPO CHE PUNTA A  ACTIVITY.CITTA
-	Regione   string `json:"regione"`
-	Citta     string `json:"citta"`
-	Provincia string `json:"provincia"`
+
+	Citta City `json:"citta"`
 
 	Telefono string `json:"telefono"`
 	EMail    string `json:"email"`
@@ -23,5 +21,5 @@ type POSTGotUser struct {
 }
 
 func (u User) CheckUser() bool {
-	return u.Nome == "" || u.Cognome == "" || u.CF == "" || u.Indirizzo == "" || u.Regione == "" || u.Citta == "" || u.Provincia == "" || u.Telefono == "" || u.EMail == "" || u.Username == "" || u.Password == ""
+	return u.Nome == "" || u.Cognome == "" || u.CF == "" || u.Indirizzo == "" || u.Citta.Regione == "" || u.Citta.Nome == "" || u.Citta.Provincia == "" || u.Telefono == "" || u.EMail == "" || u.Username == "" || u.Password == ""
 }
