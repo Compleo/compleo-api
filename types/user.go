@@ -9,11 +9,13 @@ type User struct {
 
 	Citta City `json:"citta"`
 
-	Telefono string `json:"telefono"`
-	Bio      string `json:"bio"`
-	EMail    string `json:"email"`
-	Username string `json:"username"`
-	Password string `json:"password"`
+	Telefono   string `json:"telefono"`
+	Bio        string `json:"bio"`
+	EMail      string `json:"email"`
+	Username   string `json:"username"`
+	Livello    string `json:"livello"`
+	PartitaIVA string `json:"piva"`
+	Password   string `json:"password"`
 }
 
 type POSTGotUser struct {

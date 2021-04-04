@@ -103,7 +103,7 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 		var cittaToRet types.City
 		userToRet.Citta = cittaToRet
 		for queyRes.Next() {
-			scanErr := queyRes.Scan(&userToRet.ID, &userToRet.Nome, &userToRet.Cognome, &userToRet.CF, &userToRet.Indirizzo, &userToRet.Citta.Nome, &userToRet.Citta.Regione, &userToRet.Citta.Provincia, &userToRet.Telefono, &userToRet.Bio, &userToRet.EMail, &userToRet.Username, &userToRet.Password)
+			scanErr := queyRes.Scan(&userToRet.ID, &userToRet.Nome, &userToRet.Cognome, &userToRet.CF, &userToRet.Indirizzo, &userToRet.Citta.Nome, &userToRet.Citta.Regione, &userToRet.Citta.Provincia, &userToRet.Telefono, &userToRet.Bio, &userToRet.EMail, &userToRet.Username, &userToRet.Livello, &userToRet.PartitaIVA, &userToRet.Password)
 			if scanErr != nil {
 				fmt.Println(scanErr)
 				w.Write([]byte(`{"message": "error"}`))
@@ -140,6 +140,20 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 		toRegisterUser.Cognome = r.FormValue("cognome")
 		toRegisterUser.CF = r.FormValue("cf")
 
+		//Livello utente
+		toRegisterUser.Livello = r.FormValue("lvl")
+
+		//Controllo che sia un livello accettato
+		if toRegisterUser.Livello != "Base" && toRegisterUser.Livello != "Completo" {
+			w.Write([]byte(`{"message": "error"}`))
+			return
+		}
+
+		//Partita iva
+		if iva := r.FormValue("iva"); iva != "" {
+			toRegisterUser.PartitaIVA = iva
+		}
+
 		//Posizione geografica
 		toRegisterUser.Indirizzo = r.FormValue("indirizzo")
 
@@ -160,7 +174,7 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 
 		toRegisterUser.Username = lowerNome + "." + lowerCognome
 
-		//TODO: CONTROLLA SE L'UTENTE E' GIA' REGISTRATO
+		//TODO: CONTROLLA SE UN UTENTE CON QUESTO USERNAME E' GIA' REGISTRATO, SE SI MODIFICO L'USERNAME
 
 		//Controlla che i dati siano corretti
 		if !toRegisterUser.CheckUser() {
