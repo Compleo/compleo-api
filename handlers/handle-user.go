@@ -192,6 +192,23 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("INSERT INTO `utente`(`Nome`, `Cognome`, `CF`, `Indirizzo`, `Citta`, `Regione`, `Provincia`, `Telefono`, `Email`, `Username`, `Password`) VALUES ('" + toRegisterUser.Nome + "', '" + toRegisterUser.Cognome + "', '" + toRegisterUser.CF + "', '" + toRegisterUser.Indirizzo + "', '" + toRegisterUser.Citta.Nome + "', '" + toRegisterUser.Citta.Regione + "', '" + toRegisterUser.Citta.Provincia + "', '" + toRegisterUser.Telefono + "', '" + toRegisterUser.EMail + "', '" + toRegisterUser.Username + "', '" + toRegisterUser.Password + "')")
 			return
 		}
+	case "DELETE":
+		//Posso passare per get solo l'username dell'utente, avrò in output: Nome, Cognome, Indirizzo, Citta, Provincia, Regione, Telefono
+		keys, err := r.URL.Query()["id"]
+		if !err || len(keys[0]) < 1 {
+			w.Write([]byte(`{"message": "error"}`))
+			return
+		}
+		userID := keys[0]
+		w.WriteHeader(http.StatusOK)
+
+		//Execute query
+		_, queyErr := db.Query("DELETE FROM `utente` WHERE `ID`='" + userID + "'")
+		if queyErr != nil {
+			fmt.Println(queyErr)
+			w.Write([]byte(`{"message": "error"}`))
+			return
+		}
 	default:
 		w.WriteHeader(http.StatusNotFound)
 		w.Write([]byte(`NOT SUPPORTED`))
