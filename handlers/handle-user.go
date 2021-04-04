@@ -45,7 +45,7 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 		var cittaToRet types.City
 		userToRet.Citta = cittaToRet
 		for queyRes.Next() {
-			scanErr := queyRes.Scan(&userToRet.Nome, &userToRet.Cognome, &userToRet.Indirizzo, &userToRet.Citta.Nome, &userToRet.Citta.Regione, &userToRet.Citta.Provincia, &userToRet.Telefono)
+			scanErr := queyRes.Scan(&userToRet.Nome, &userToRet.Cognome, &userToRet.Indirizzo, &userToRet.Citta.Nome, &userToRet.Citta.Provincia, &userToRet.Citta.Regione, &userToRet.Telefono)
 			if scanErr != nil {
 				fmt.Println(scanErr)
 				w.Write([]byte(`{"message": "error"}`))

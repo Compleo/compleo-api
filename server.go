@@ -30,9 +30,9 @@ func main() {
 }
 
 func initHandlers() {
-	http.HandleFunc("/", rootHanle)
-	http.HandleFunc("/activity", handlers.ActivityHanle)
-	http.HandleFunc("/user", handlers.UserHandler)
+	go http.HandleFunc("/", rootHanle)
+	go http.HandleFunc("/activity", handlers.ActivityHanle)
+	go http.HandleFunc("/user", handlers.UserHandler)
 }
 
 func rootHanle(w http.ResponseWriter, r *http.Request) {
