@@ -193,7 +193,6 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	case "DELETE":
-		//Posso passare per get solo l'username dell'utente, avrò in output: Nome, Cognome, Indirizzo, Citta, Provincia, Regione, Telefono
 		keys, err := r.URL.Query()["id"]
 		if !err || len(keys[0]) < 1 {
 			w.Write([]byte(`{"message": "error"}`))
