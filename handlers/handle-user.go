@@ -33,7 +33,7 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 
 		//Execute query
-		queyRes, queyErr := db.Query("SELECT Nome, Cognome, Indirizzo, Citta, Provincia, Regione, Telefono FROM utente WHERE Username='" + usrName + "'")
+		queyRes, queyErr := db.Query("SELECT Nome, Cognome, Indirizzo, Citta, Provincia, Regione, Telefono, Bio, Email, Livello FROM utente WHERE Username='" + usrName + "'")
 		if queyErr != nil {
 			fmt.Println(queyErr)
 			w.Write([]byte(`{"message": "error"}`))
@@ -45,7 +45,7 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 		var cittaToRet types.City
 		userToRet.Citta = cittaToRet
 		for queyRes.Next() {
-			scanErr := queyRes.Scan(&userToRet.Nome, &userToRet.Cognome, &userToRet.Indirizzo, &userToRet.Citta.Nome, &userToRet.Citta.Provincia, &userToRet.Citta.Regione, &userToRet.Telefono)
+			scanErr := queyRes.Scan(&userToRet.Nome, &userToRet.Cognome, &userToRet.Indirizzo, &userToRet.Citta.Nome, &userToRet.Citta.Provincia, &userToRet.Citta.Regione, &userToRet.Telefono, &userToRet.Bio, &userToRet.EMail, &userToRet.Livello)
 			if scanErr != nil {
 				fmt.Println(scanErr)
 				w.Write([]byte(`{"message": "error"}`))

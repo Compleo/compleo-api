@@ -10,7 +10,7 @@ import (
 )
 
 //API functions:
-//		work on 5051 port
+//		work on port 5051
 
 func checkError(e error) {
 	if e != nil {
@@ -32,6 +32,7 @@ func main() {
 func initHandlers() {
 	go http.HandleFunc("/", rootHanle)
 	go http.HandleFunc("/activity", handlers.ActivityHanle)
+	go http.HandleFunc("/recensione", handlers.RecensioneHandler)
 	go http.HandleFunc("/user", handlers.UserHandler)
 }
 
