@@ -14,8 +14,9 @@ package types
 
 type Recensione struct {
 	ID          int     `json:"id"`
-	IDRecensito int     `json:"idRecensito"`
-	IDRecensore int     `json:"idRecensore"`
-	Valore      float32 `json:"valore"`
+	IDRecensito int64   `json:"idRecensito"`
+	IDRecensore int64   `json:"idRecensore"`
+	Valore      float64 `json:"valore"`
+	Titolo      string  `json:"titolo"`
 	Testo       string  `json:"testo"`
 }
