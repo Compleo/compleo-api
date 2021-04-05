@@ -138,6 +138,7 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 		//Informazione utente
 		toRegisterUser.Nome = r.FormValue("nome")
 		toRegisterUser.Cognome = r.FormValue("cognome")
+		toRegisterUser.Telefono = r.FormValue("telefono")
 		toRegisterUser.CF = r.FormValue("cf")
 
 		//Livello utente
@@ -150,7 +151,7 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		//Partita iva
-		if iva := r.FormValue("iva"); iva != "" {
+		if iva := r.FormValue("piva"); iva != "" {
 			toRegisterUser.PartitaIVA = iva
 		}
 
@@ -175,17 +176,17 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 		toRegisterUser.Username = lowerNome + "." + lowerCognome
 
 		//TODO: CONTROLLA SE UN UTENTE CON QUESTO USERNAME E' GIA' REGISTRATO, SE SI MODIFICO L'USERNAME
-
-		//Controlla che i dati siano corretti
-		if !toRegisterUser.CheckUser() {
-			w.Write([]byte(`{"message": "error"}`))
-			fmt.Println("ERRORE")
-			fmt.Println(toRegisterUser.Username)
-			return
-		}
+		/*
+			//Controlla che i dati siano corretti
+			if !toRegisterUser.CheckUser() {
+				w.Write([]byte(`{"message": "error"}`))
+				fmt.Println("ERRORE")
+				fmt.Println(toRegisterUser.Username)
+				return
+			}*/
 
 		//Esegui la query
-		_, queyErr := db.Query("INSERT INTO `utente`(`Nome`, `Cognome`, `CF`, `Indirizzo`, `Citta`, `Regione`, `Provincia`, `Telefono`, `Email`, `Username`, `Password`) VALUES ('" + toRegisterUser.Nome + "', '" + toRegisterUser.Cognome + "', '" + toRegisterUser.CF + "', '" + toRegisterUser.Indirizzo + "', '" + toRegisterUser.Citta.Nome + "', '" + toRegisterUser.Citta.Regione + "', '" + toRegisterUser.Citta.Provincia + "', '" + toRegisterUser.Telefono + "', '" + toRegisterUser.EMail + "', '" + toRegisterUser.Username + "', '" + toRegisterUser.Password + "')")
+		_, queyErr := db.Query("INSERT INTO `utente`(`Nome`, `Cognome`, `CF`, `Indirizzo`, `Citta`, `Regione`, `Provincia`, `Telefono`, `Email`, `Username`, `Livello`, `IVA`, `Password`) VALUES ('" + toRegisterUser.Nome + "', '" + toRegisterUser.Cognome + "', '" + toRegisterUser.CF + "', '" + toRegisterUser.Indirizzo + "', '" + toRegisterUser.Citta.Nome + "', '" + toRegisterUser.Citta.Regione + "', '" + toRegisterUser.Citta.Provincia + "', '" + toRegisterUser.Telefono + "', '" + toRegisterUser.EMail + "', '" + toRegisterUser.Username + "', '" + toRegisterUser.Livello + "', '" + toRegisterUser.PartitaIVA + "', '" + toRegisterUser.Password + "')")
 		if queyErr != nil {
 			fmt.Println(queyErr)
 			w.Write([]byte(`{"message": "error"}`))
