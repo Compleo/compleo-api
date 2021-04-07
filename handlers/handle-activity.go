@@ -28,7 +28,7 @@ func ActivityHanle(w http.ResponseWriter, r *http.Request) {
 			//Devo listare le attività
 
 			//Eseguo la query
-			queyRes, queyErr := db.Query("SELECT Descrizione FROM Attivita")
+			queyRes, queyErr := db.Query("SELECT Descrizione FROM attivita")
 			if queyErr != nil {
 				fmt.Println(queyErr)
 				w.Write([]byte(`{"message": "error"}`))
