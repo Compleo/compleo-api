@@ -34,6 +34,7 @@ func initHandlers() {
 	go http.HandleFunc("/activity", handlers.ActivityHanle)
 	go http.HandleFunc("/recensione", handlers.RecensioneHandler)
 	go http.HandleFunc("/user", handlers.UserHandler)
+	go http.HandleFunc("/user/update", handlers.UpdateUserHandler)
 }
 
 func rootHanle(w http.ResponseWriter, r *http.Request) {
