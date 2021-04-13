@@ -33,22 +33,9 @@ func RecensioneHandler(w http.ResponseWriter, r *http.Request) {
 	case "GET":
 		//recID = IDRECENSITO, SE SETTATO RESTITUISCI TUTTE LE RECENSIONI DEL RECENSITO
 		//redID = IDRECENSORE, SE SETTATO RESTITUISCI TUTTE LE RECENSIONI DEL RECENSORE
-		keysC, errC := r.URL.Query()["recID"]
-		if !errC || len(keysC[0]) < 1 {
-			//NON ESISTE UNA KEY DI NOME recID, CONTROLLO SE ESISTE redID
-			keysD, errD := r.URL.Query()["redID"]
-			if !errD || len(keysD[0]) < 1 {
-				w.Write([]byte(`{"message": "error"}`))
-				return
-			}
 
-			//ESISTE redID, TODO: LISTA
-
-			return
-		}
-
-		//recID := keysC[0]
-		//TODO: LISTA
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte(`NOT SUPPORTED FOR THIS PATH`))
 
 	case "PUT":
 		//INSERISCI UNA NUOVA RECENSIONE

@@ -30,9 +30,18 @@ func main() {
 }
 
 func initHandlers() {
+	//Root
 	go http.HandleFunc("/", rootHanle)
+
+	//Attività
 	go http.HandleFunc("/activity", handlers.ActivityHanle)
+
+	//Recensioni
 	go http.HandleFunc("/recensione", handlers.RecensioneHandler)
+	go http.HandleFunc("/recensione/rec", handlers.RecensioneRECHandler)
+	go http.HandleFunc("/recensione/red", handlers.RecensioneREDHandler)
+
+	//Utenti
 	go http.HandleFunc("/user", handlers.UserHandler)
 	go http.HandleFunc("/user/update", handlers.UpdateUserHandler)
 }
