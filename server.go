@@ -44,6 +44,7 @@ func initHandlers() {
 	//Utenti
 	go http.HandleFunc("/user", handlers.UserHandler)
 	go http.HandleFunc("/user/update", handlers.UpdateUserHandler)
+	go http.HandleFunc("/user/getByID", handlers.GetByIDHandler)
 }
 
 func rootHanle(w http.ResponseWriter, r *http.Request) {
