@@ -1,17 +1,5 @@
 package handlers
 
-/*
-   ***************************************
-           Compleo Source Code
-   ***************************************
-   Programmer: Leonardo Baldazzi   (git -> @squirlyfoxy)
-                                   (instagram -> @leonardobaldazzi_)
-
-   Il seguente codice contiene gli handlers per la root /recensione/rec
-
-   THE FOLLOWING SOURCE CODE IS CLOSED SOURCE
-*/
-
 import (
 	"database/sql"
 	"encoding/json"
@@ -22,10 +10,8 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-//ID RECENSITO
-
-func RecensioneRECHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Got a /recensione/rec handle from ", r.RemoteAddr)
+func ActivityListPERIDHandle(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Got a /activity/lid handle from ", r.RemoteAddr)
 	w.Header().Set("Content-Type", "application/json")
 
 	db, sqlError := sql.Open("mysql", sqlVal)
@@ -35,27 +21,29 @@ func RecensioneRECHandler(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "GET":
-		keys, err := r.URL.Query()["rec"]
+		keys, err := r.URL.Query()["id"]
 		if !err || len(keys[0]) < 1 {
 			w.Write([]byte(`{"message": "error"}`))
 			fmt.Println("Errore")
 			return
 		}
-		uID := keys[0]
+		id := keys[0]
+
 		w.WriteHeader(http.StatusOK)
 
 		//Eseguo la query
-		queyRes, queyErr := db.Query("SELECT * FROM `recensioni` WHERE `IDRecensito`='" + uID + "'")
+		queyRes, queyErr := db.Query("SELECT * FROM `lavori` WHERE `IDUtente`='" + id + "'")
 		if queyErr != nil {
 			fmt.Println(queyErr)
 			w.Write([]byte(`{"message": "error"}`))
 			return
 		}
 
-		var array []types.Recensione
+		//Creo l'array da ritornare
+		var array []types.Activity
 		for queyRes.Next() {
-			var g types.Recensione
-			queyRes.Scan(&g.ID, &g.IDRecensito, &g.IDRecensore, &g.Valore, &g.Titolo, &g.Testo)
+			var g types.Activity
+			queyRes.Scan(&g.ID, &g.IDUtente, &g.Tipo, &g.Titolo, &g.Testo)
 
 			array = append(array, g)
 		}

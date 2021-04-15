@@ -26,6 +26,8 @@ import (
 
 func RecensioneREDHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Got a /recensione/red handle from ", r.RemoteAddr)
+	w.Header().Set("Content-Type", "application/json")
+
 	db, sqlError := sql.Open("mysql", sqlVal)
 	if sqlError != nil {
 		panic(sqlError.Error())

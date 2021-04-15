@@ -20,44 +20,29 @@ func ActivityHanle(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "GET":
-		//TODO: IL CODICE SEGUENTE E' INGUARDABILE
 
-		//Controllo le variabili che mi sono state passate
-		keys, err := r.URL.Query()["lst"] //Key lst sta per 'lista', se settata vuol dire che non devo listare
-		if !err || len(keys[0]) < 1 {
-			//Devo listare le attività
-
-			//Eseguo la query
-			queyRes, queyErr := db.Query("SELECT Descrizione FROM attivita")
-			if queyErr != nil {
-				fmt.Println(queyErr)
-				w.Write([]byte(`{"message": "error"}`))
-				return
-			}
-
-			//Create array
-			var array []string
-			for queyRes.Next() {
-				var g string
-				queyRes.Scan(&g)
-
-				array = append(array, g)
-			}
-
-			//Create JSON
-			j, _ := json.Marshal(array)
-			w.Write([]byte(j))
-
+		//Eseguo la query
+		queyRes, queyErr := db.Query("SELECT Descrizione FROM attivita")
+		if queyErr != nil {
+			fmt.Println(queyErr)
+			w.Write([]byte(`{"message": "error"}`))
 			return
 		}
 
-		lst := keys[0]
+		//Create array
+		var array []string
+		for queyRes.Next() {
+			var g string
+			queyRes.Scan(&g)
 
-		if lst == "1" {
-			w.Write([]byte(`TEST`)) //Farò qualcos'altro
+			array = append(array, g)
 		}
 
+		//Create JSON
+		j, _ := json.Marshal(array)
+		w.Write([]byte(j))
 	case "POST":
+	case "DELETE":
 	default:
 		w.WriteHeader(http.StatusNotFound)
 		w.Write([]byte(`NOT SUPPORTED`))

@@ -35,6 +35,7 @@ func initHandlers() {
 
 	//Attività
 	go http.HandleFunc("/activity", handlers.ActivityHanle)
+	go http.HandleFunc("/activity/lid", handlers.ActivityListPERIDHandle)
 
 	//Recensioni
 	go http.HandleFunc("/recensione", handlers.RecensioneHandler)
