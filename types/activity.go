@@ -1,8 +1,8 @@
 package types
 
 type Activity struct {
-	ID       int    `json:"id"`
-	IDUtente int    `json:"idUtente"`
+	ID       int64  `json:"id"`
+	IDUtente int64  `json:"idUtente"`
 	Tipo     string `json:"tipo"`
 	Titolo   string `json:"titolo"`
 	Testo    string `json:"testo"`
