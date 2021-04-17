@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/Compelo/compleo-api/types"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func ActivityListPerQualificheHandle(w http.ResponseWriter, r *http.Request) {
