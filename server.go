@@ -38,6 +38,7 @@ func initHandlers() {
 	go http.HandleFunc("/activity/lid", handlers.ActivityListPERIDHandle)
 	go http.HandleFunc("/activity/listqual", handlers.ActivityListPerQualificheHandle)
 	go http.HandleFunc("/activity/listall", handlers.ActivityListAllHanle)
+	go http.HandleFunc("/activity/getbyid", handlers.ActivityGetFromIDHanle)
 
 	//Recensioni
 	go http.HandleFunc("/recensione", handlers.RecensioneHandler)
