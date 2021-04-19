@@ -73,6 +73,21 @@ func ActivityHanle(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	case "DELETE":
+		keys, err := r.URL.Query()["id"]
+		if !err || len(keys[0]) < 1 {
+			w.Write([]byte(`{"message": "error"}`))
+			return
+		}
+		id := keys[0]
+		w.WriteHeader(http.StatusOK)
+
+		//Execute query
+		_, queyErr := db.Query("DELETE FROM `lavori` WHERE `ID`='" + id + "'")
+		if queyErr != nil {
+			fmt.Println(queyErr)
+			w.Write([]byte(`{"message": "error"}`))
+			return
+		}
 	default:
 		w.WriteHeader(http.StatusNotFound)
 		w.Write([]byte(`NOT SUPPORTED`))
