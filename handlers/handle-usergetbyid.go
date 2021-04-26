@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/Compelo/compleo-api/types"
 	_ "github.com/go-sql-driver/mysql"
@@ -44,6 +45,9 @@ func GetByIDHandler(w http.ResponseWriter, r *http.Request) {
 		userToRet.Citta = cittaToRet
 		for queyRes.Next() {
 			scanErr := queyRes.Scan(&userToRet.ID, &userToRet.Nome, &userToRet.Cognome, &userToRet.Indirizzo, &userToRet.Citta.Nome, &userToRet.Citta.Provincia, &userToRet.Citta.Regione, &userToRet.Telefono, &userToRet.Bio, &userToRet.EMail, &userToRet.Livello)
+
+			userToRet.Username = strings.ToLower(userToRet.Nome) + "." + strings.ToLower(userToRet.Cognome)
+
 			if scanErr != nil {
 				fmt.Println(scanErr)
 				w.Write([]byte(`{"message": "error"}`))

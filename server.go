@@ -45,6 +45,7 @@ func initHandlers() {
 	go http.HandleFunc("/recensione", handlers.RecensioneHandler)
 	go http.HandleFunc("/recensione/rec", handlers.RecensioneRECHandler)
 	go http.HandleFunc("/recensione/red", handlers.RecensioneREDHandler)
+	go http.HandleFunc("/recensione/get", handlers.RecensioneGetIDHandler)
 
 	//Utenti
 	go http.HandleFunc("/user", handlers.UserHandler)
