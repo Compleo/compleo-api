@@ -186,7 +186,7 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 			}*/
 
 		//Esegui la query
-		_, queyErr := db.Query("INSERT INTO `utente`(`Nome`, `Cognome`, `CF`, `Indirizzo`, `Citta`, `Regione`, `Provincia`, `Telefono`, `Email`, `Username`, `Livello`, `IVA`, `Password`) VALUES ('" + toRegisterUser.Nome + "', '" + toRegisterUser.Cognome + "', '" + toRegisterUser.CF + "', '" + toRegisterUser.Indirizzo + "', '" + toRegisterUser.Citta.Nome + "', '" + toRegisterUser.Citta.Regione + "', '" + toRegisterUser.Citta.Provincia + "', '" + toRegisterUser.Telefono + "', '" + toRegisterUser.EMail + "', '" + toRegisterUser.Username + "', '" + toRegisterUser.Livello + "', '" + toRegisterUser.PartitaIVA + "', '" + toRegisterUser.Password + "')")
+		_, queyErr := db.Query("INSERT INTO `utente`(`Nome`, `Cognome`, `CF`, `Indirizzo`, `Citta`, `Regione`, `Provincia`, `Telefono`, `Bio`, `Email`, `Username`, `Livello`, `IVA`, `Password`) VALUES ('" + toRegisterUser.Nome + "', '" + toRegisterUser.Cognome + "', '" + toRegisterUser.CF + "', '" + toRegisterUser.Indirizzo + "', '" + toRegisterUser.Citta.Nome + "', '" + toRegisterUser.Citta.Regione + "', '" + toRegisterUser.Citta.Provincia + "', '" + toRegisterUser.Telefono + "', '" + "Bio" + "', '" + toRegisterUser.EMail + "', '" + toRegisterUser.Username + "', '" + toRegisterUser.Livello + "', '" + toRegisterUser.PartitaIVA + "', '" + toRegisterUser.Password + "')")
 		if queyErr != nil {
 			fmt.Println(queyErr)
 			w.Write([]byte(`{"message": "error"}`))
