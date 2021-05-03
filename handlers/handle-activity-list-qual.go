@@ -43,7 +43,7 @@ func ActivityListPerQualificheHandle(w http.ResponseWriter, r *http.Request) {
 		var array []types.Activity
 		for queyRes.Next() {
 			var g types.Activity
-			queyRes.Scan(&g.ID, &g.IDUtente, &g.Tipo, &g.Titolo, &g.Testo)
+			queyRes.Scan(&g.ID, &g.IDUtente, &g.Tipo, &g.Titolo, &g.Testo, &g.UnitaMisura, &g.Prezzo, &g.Disponibilita)
 
 			array = append(array, g)
 		}

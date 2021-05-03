@@ -40,7 +40,7 @@ func ActivityGetIDHandle(w http.ResponseWriter, r *http.Request) {
 		//Creo l'array da ritornare
 		var g types.Activity
 		for queyRes.Next() {
-			scanErr := queyRes.Scan(&g.ID, &g.IDUtente, &g.Tipo, &g.Titolo, &g.Testo)
+			scanErr := queyRes.Scan(&g.ID, &g.IDUtente, &g.Tipo, &g.Titolo, &g.Testo, &g.UnitaMisura, &g.Prezzo, &g.Disponibilita)
 			if scanErr != nil {
 				fmt.Println(scanErr)
 				w.Write([]byte(`{"message": "error"}`))

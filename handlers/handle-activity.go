@@ -62,10 +62,14 @@ func ActivityHanle(w http.ResponseWriter, r *http.Request) {
 		lavoroToAdd.Titolo = r.FormValue("titolo")
 		lavoroToAdd.Tipo = r.FormValue("tipo")
 
+		lavoroToAdd.UnitaMisura = r.FormValue("unitaMisura")
+		lavoroToAdd.Prezzo, _ = strconv.ParseFloat(r.FormValue("prezzo"), 10)
+		lavoroToAdd.Disponibilita = r.FormValue("disponibilita")
+
 		//TODO: CONTROLLA DATI
 
 		//Esegui la query
-		_, queyErr := db.Query("INSERT INTO `lavori`(`IDUtente`, `Tipo`, `Titolo`, `Testo`) VALUES ('" + fmt.Sprint(lavoroToAdd.IDUtente) + "','" + lavoroToAdd.Tipo + "','" + lavoroToAdd.Titolo + "','" + lavoroToAdd.Testo + "')")
+		_, queyErr := db.Query("INSERT INTO `lavori`(`IDUtente`, `Tipo`, `Titolo`, `Testo`, `UnitaMisura`, `Prezzo`, `Disponibilita`) VALUES ('" + fmt.Sprint(lavoroToAdd.IDUtente) + "','" + lavoroToAdd.Tipo + "','" + lavoroToAdd.Titolo + "','" + lavoroToAdd.Testo + "', '" + lavoroToAdd.UnitaMisura + "', '" + fmt.Sprintf("%f", lavoroToAdd.Prezzo) + "', '" + lavoroToAdd.Disponibilita + "')")
 		if queyErr != nil {
 			fmt.Println(queyErr)
 			w.Write([]byte(`{"message": "error"}`))
