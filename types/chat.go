@@ -27,18 +27,24 @@ type Chat struct {
 	CreatedTime time.Time `json:"tempoCreazione"`
 }
 
-func NewSession(idLavoratore int, idSender int) Session {
+func NewSession(idLavoratore int, idSender int, idLavoro int) Session {
 	var s Session
 	s.CreatedTime = time.Now()
 
 	s.IdSender = idSender
 	s.IdLavoratore = idLavoratore
+	s.IdLavoro = idLavoro
 
 	return s
 }
 
-func (s Session) NewChat() {
+func (s Session) NewChat(t int, content string) {
 	var c Chat
+	c.ContentType = t
+	c.Content = content
+
+	c.CreatedTime = time.Now()
+
 	s.Chat = append(s.Chat, c)
 }
 

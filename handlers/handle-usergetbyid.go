@@ -32,7 +32,7 @@ func GetByIDHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 
 		//Execute query
-		queyRes, queyErr := db.Query("SELECT ID, Nome, Cognome, Indirizzo, Citta, Provincia, Regione, Telefono, Bio, Email, Livello FROM utente WHERE ID='" + usrID + "'")
+		queyRes, queyErr := db.Query("SELECT * FROM utente WHERE ID='" + usrID + "'")
 		if queyErr != nil {
 			fmt.Println(queyErr)
 			w.Write([]byte(`{"message": "error"}`))
@@ -44,7 +44,7 @@ func GetByIDHandler(w http.ResponseWriter, r *http.Request) {
 		var cittaToRet types.City
 		userToRet.Citta = cittaToRet
 		for queyRes.Next() {
-			scanErr := queyRes.Scan(&userToRet.ID, &userToRet.Nome, &userToRet.Cognome, &userToRet.Indirizzo, &userToRet.Citta.Nome, &userToRet.Citta.Provincia, &userToRet.Citta.Regione, &userToRet.Telefono, &userToRet.Bio, &userToRet.EMail, &userToRet.Livello)
+			scanErr := queyRes.Scan(&userToRet.ID, &userToRet.Nome, &userToRet.Cognome, &userToRet.CF, &userToRet.Indirizzo, &userToRet.Citta.Nome, &userToRet.Citta.Regione, &userToRet.Citta.Provincia, &userToRet.Telefono, &userToRet.Bio, &userToRet.EMail, &userToRet.Username, &userToRet.Sesso, &userToRet.DataNascita, &userToRet.Livello, &userToRet.PartitaIVA, &userToRet.Password)
 
 			userToRet.Username = strings.ToLower(userToRet.Nome) + "." + strings.ToLower(userToRet.Cognome)
 

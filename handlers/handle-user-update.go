@@ -57,8 +57,11 @@ func UpdateUserHandler(w http.ResponseWriter, r *http.Request) {
 		toUpdateUser.PartitaIVA = r.FormValue("piva")
 		toUpdateUser.Bio = r.FormValue("bio")
 
+		toUpdateUser.Sesso = r.FormValue("sesso")
+		toUpdateUser.DataNascita = r.FormValue("dataNascita")
+
 		//Esegui la query
-		_, queyErr := db.Query("UPDATE `utente` SET `Telefono`='" + toUpdateUser.Telefono + "',`Bio`='" + toUpdateUser.Bio + "',`Email`='" + toUpdateUser.EMail + "',`IVA`='" + toUpdateUser.PartitaIVA + "',`Password`='" + toUpdateUser.Password + "' WHERE `ID` = '" + strconv.Itoa(toUpdateUser.ID) + "'")
+		_, queyErr := db.Query("UPDATE `utente` SET `Telefono`='" + toUpdateUser.Telefono + "',`Bio`='" + toUpdateUser.Bio + "',`Email`='" + toUpdateUser.EMail + "',`IVA`='" + toUpdateUser.PartitaIVA + "',`Password`='" + toUpdateUser.Password + "', `Sesso`='" + toUpdateUser.Sesso + "', `DataNascita`='" + toUpdateUser.DataNascita + "' WHERE `ID` = '" + strconv.Itoa(toUpdateUser.ID) + "'")
 		if queyErr != nil {
 			fmt.Println(err)
 			w.Write([]byte(`{"message": "error"}`))
