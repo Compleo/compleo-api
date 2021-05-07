@@ -10,8 +10,8 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func RecensioneGetIDHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Got a /recensione/get handle from ", r.RemoteAddr)
+func PrenotazioneGetDaIDHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Got a /prenotazione/get handle from ", r.RemoteAddr)
 	w.Header().Set("Content-Type", "application/json")
 
 	db, sqlError := sql.Open("mysql", sqlVal)
@@ -31,16 +31,17 @@ func RecensioneGetIDHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 
 		//Execute query
-		queyRes, queyErr := db.Query("SELECT * FROM recensioni WHERE ID='" + id + "'")
+		queyRes, queyErr := db.Query("SELECT * FROM prenotazioni WHERE ID='" + id + "'")
 		if queyErr != nil {
 			fmt.Println(queyErr)
 			w.Write([]byte(`{"message": "error"}`))
 			return
 		}
 
-		var recensioneToRet types.Recensione
+		var toReturnPrenotazione types.Prenotazione
+
 		for queyRes.Next() {
-			scanErr := queyRes.Scan(&recensioneToRet.ID, &recensioneToRet.IDRecensito, &recensioneToRet.IDRecensore, &recensioneToRet.Valore, &recensioneToRet.Titolo, &recensioneToRet.Testo)
+			scanErr := queyRes.Scan(&toReturnPrenotazione.ID, &toReturnPrenotazione.IDLavoro, &toReturnPrenotazione.IDRichiedente, &toReturnPrenotazione.Stato, &toReturnPrenotazione.Scelta)
 			if scanErr != nil {
 				fmt.Println(scanErr)
 				w.Write([]byte(`{"message": "error"}`))
@@ -49,7 +50,7 @@ func RecensioneGetIDHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		//Create json
-		j, jsonErr := json.Marshal(recensioneToRet)
+		j, jsonErr := json.Marshal(toReturnPrenotazione)
 		if jsonErr != nil {
 			fmt.Println(jsonErr)
 			w.Write([]byte(`{"message": "error"}`))
