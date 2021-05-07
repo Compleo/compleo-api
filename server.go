@@ -50,6 +50,7 @@ func initHandlers() {
 	//Prenotazioni
 	go http.HandleFunc("/prenotazione", handlers.PrenotazioneHandler)
 	go http.HandleFunc("/prenotazione/get", handlers.PrenotazioneGetDaIDHandler)
+	go http.HandleFunc("/prenotazione/update", handlers.PrenotazioneUpdateHandler)
 
 	//Utenti
 	go http.HandleFunc("/user", handlers.UserHandler)

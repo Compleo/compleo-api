@@ -22,8 +22,6 @@ func PrenotazioneHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
 		//Prendi le prenotazioni di un utente
-	case "POST":
-		//Aggiorna la prenotazione
 	case "PUT":
 		//Inserisci una nuova prenotazione
 		err := r.ParseForm()
@@ -40,6 +38,15 @@ func PrenotazioneHandler(w http.ResponseWriter, r *http.Request) {
 		toAddPrenotazione.IDRichiedente, _ = strconv.Atoi(r.FormValue("idRichiedente"))
 		toAddPrenotazione.Scelta = r.FormValue("scelta")
 		toAddPrenotazione.Stato = "Richiesto"
+
+		//Esegui la query
+		_, queyErr := db.Query("INSERT INTO `prenotazioni`(`IDLavoro`, `IDRichiedente`, `Stato`, `Scelta`) VALUES ('" + fmt.Sprint(toAddPrenotazione.IDLavoro) + "','" + fmt.Sprint(toAddPrenotazione.IDRichiedente) + "','" + toAddPrenotazione.Stato + "','" + toAddPrenotazione.Scelta + "')")
+		if queyErr != nil {
+			fmt.Println(queyErr)
+			w.Write([]byte(`{"message": "error"}`))
+			fmt.Println("")
+			return
+		}
 
 	case "DELETE":
 		//Elimina la prenotazione
