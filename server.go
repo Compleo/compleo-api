@@ -53,6 +53,11 @@ func initHandlers() {
 	go http.HandleFunc("/prenotazione/update", handlers.PrenotazioneUpdateHandler)
 	go http.HandleFunc("/prenotazione/get/all", handlers.PrenotazioneGetAllFromIdLavoroHandler)
 
+	//Chat
+	go http.HandleFunc("/chat", handlers.ChatHandler)
+	go http.HandleFunc("/chat/get/destinatario", handlers.ChatListAllDestinatarioHandler)
+	go http.HandleFunc("/chat/get/richiedente", handlers.ChatListAllRichiedenteHandler)
+
 	//Utenti
 	go http.HandleFunc("/user", handlers.UserHandler)
 	go http.HandleFunc("/user/update", handlers.UpdateUserHandler)
